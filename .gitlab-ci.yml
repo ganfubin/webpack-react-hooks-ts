@@ -1,0 +1,68 @@
+include:
+  - project: "efficiency/gitlab-ci-template"
+    file: "templates/cicd-v1.gitlab-ci.yml"
+    ref: "master"
+
+variables:
+  CICD_CONFIG_FILE: deploy/cicd.yml
+
+# .deploy_branches: &deploy_branches
+#   only:
+#     - master
+
+# .package_branches: &package_branches
+#   only:
+#     - master
+
+build:
+  script:
+    - env
+    - npm install
+    - npm run build
+  extends:
+    - .build-node16
+  artifacts:
+    expire_in: 3 day
+    paths:
+      - dist
+  only:
+    - master
+    - dev
+  tags:
+    - 4G
+  cache:
+    untracked: false
+    policy: pull-push
+    paths:
+      - ~/.npm
+
+.package-extend:
+  dependencies:
+    - build
+  script:
+    - bpt -c bpt.yml -in ${CICD_CONFIG:=deploy/cicd.yml}
+  only:
+    - dev
+    - master
+
+.deploy-dev-extend:
+  when: on_success
+  dependencies:
+    - build
+  only:
+    - dev
+    - master
+
+.deploy-uat-extend:
+  dependencies:
+    - build
+  only:
+    - dev
+    - master
+
+.deploy-prod-extend:
+  dependencies:
+    - build
+  only:
+    - dev
+    - master
