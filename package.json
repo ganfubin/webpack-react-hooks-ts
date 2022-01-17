@@ -63,6 +63,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",
+    "ignore-loader": "^0.1.2",
     "img-loader": "^4.0.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
@@ -84,6 +85,7 @@
     "webpackbar": "^5.0.2"
   },
   "dependencies": {
+    "@types/babel__plugin-transform-runtime": "^7.9.2",
     "antd": "^4.17.3",
     "axios": "^0.24.0",
     "react": "^17.0.2",
